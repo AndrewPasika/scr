@@ -1,0 +1,13 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: cassandra-data-pv
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "cassandra-pv"
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes: [ "ReadWriteOnce" ]
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: "/usr/lib/cassandra-data"

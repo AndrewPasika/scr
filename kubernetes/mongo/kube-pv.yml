@@ -1,0 +1,13 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: mongo-data-pv
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "mongo-pv"
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes: [ "ReadWriteOnce" ]
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: "/usr/lib/mongo-data"

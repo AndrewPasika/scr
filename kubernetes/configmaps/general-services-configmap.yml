@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: general-services-config
+  labels:
+    name: general-services-config
+data:
+  NAMESPACE_NAME: default
+  GET_HOSTS_FROM: dns
+  NATS_HOST_PORT: nats://nats-service.default.svc.cluster.local:4222
+  JMX_MONITOR_USER_PASSWORD: monitor

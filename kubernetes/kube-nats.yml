@@ -1,0 +1,75 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nats-service
+  labels:
+    app: nats-service
+    tier: message-broker
+spec:
+  ports:
+    # the port that this service should serve on
+  - port: 4222
+    targetPort: 4222
+    protocol: TCP
+    name: clients
+  - port: 6222
+    targetPort: 6222
+    protocol: TCP
+    name: http
+  - port: 8222
+    targetPort: 8222
+    protocol: TCP
+    name: routing
+  selector:
+    app: nats-service
+    tier: message-broker
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nats-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nats-service
+        tier: message-broker
+    spec:
+      containers:
+      - name: nats-service
+        image: nats:0.9.6
+        args: 
+          - "--cluster=nats://0.0.0.0:6222"
+          - "--routes=nats://nats-service.$(NAMESPACE_NAME).svc.cluster.local:6222"
+        terminationMessagePolicy: FallbackToLogsOnError
+        livenessProbe:
+          tcpSocket:
+            port: clients-port
+          initialDelaySeconds: 60
+          periodSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: clients-port
+          initialDelaySeconds: 1
+          periodSeconds: 1
+        resources:
+          requests:
+            memory: 100Mi
+        env:
+        - name: GET_HOSTS_FROM
+          valueFrom:
+            configMapKeyRef:
+              name: general-services-config
+              key: GET_HOSTS_FROM
+        - name: NAMESPACE_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: general-services-config
+              key: NAMESPACE_NAME
+        ports:
+        - name: clients-port
+          containerPort: 4222
+        - containerPort: 6222
+        - containerPort: 8222

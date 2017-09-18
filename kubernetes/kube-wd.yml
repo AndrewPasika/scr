@@ -1,0 +1,68 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wd-service
+  labels:
+    app: wd-service
+    tier: frontend
+spec:
+  type: "LoadBalancer"
+  ports:
+  - port: 30900
+    targetPort: 30900
+    nodePort: 30900
+    name: wd
+  selector:
+    app: wd-service
+    tier: frontend
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: wd-service
+  namespace: default
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: wd-service
+        tier: frontend
+    spec:
+      imagePullSecrets:
+        - name: hub-deploy
+      containers:
+      - name: wd-service
+        image: hub.kaaiot.io/kaaiot/wd/wd-service:1.0.0-SNAPSHOT
+        imagePullPolicy: Always
+        volumeMounts:
+          - mountPath: /usr/src/web-dashboard/conf
+            name: wd-conf-volume
+        resources:
+          requests:
+            memory: 350Mi
+          limits:
+            memory: 1Gi
+        envFrom:
+        - configMapRef:
+            name: general-services-config
+        env:
+        - name: CONFIG_REPOSITORY_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: scr-url-config
+              key: scr-url
+        - name: REPOSITORY_BRANCH_NAME
+          value: "master"
+        - name: SERVICE_INSTANCE_NAME
+          value: wd
+        - name: DEPENDENCY_SERVICES_WAIT_TIMEOUT_SEC
+          value: "60"
+        ports:
+        - name: wd-port
+          containerPort: 30900
+      volumes:
+        - name: wd-conf-volume
+          hostPath:
+            path: /usr/lib/web-dashboard/conf

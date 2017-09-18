@@ -1,0 +1,93 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mariadb.credentials
+type: Opaque
+data:
+  username: a2Fh
+  password: a2FhMTIz
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mariadb
+  labels:
+    app: mariadb
+    tier: persistence
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+    protocol: TCP
+    name: clients
+  selector:
+    app: mariadb
+    tier: persistence
+---
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: mariadb
+spec:
+  serviceName: mariadb
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mariadb
+        tier: persistence
+    spec:
+      containers:
+      - name: mariadb
+        image: mariadb:10.1.22
+        terminationMessagePolicy: FallbackToLogsOnError
+        livenessProbe:
+          tcpSocket:
+            port: clients-port
+          initialDelaySeconds: 150
+          periodSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: clients-port
+          initialDelaySeconds: 1
+          periodSeconds: 1
+        resources:
+          requests:
+            memory: 100Mi
+        env:
+        - name: GET_HOSTS_FROM
+          valueFrom:
+            configMapKeyRef:
+              name: general-services-config
+              key: GET_HOSTS_FROM
+        - name: MYSQL_ROOT_PASSWORD
+          value: kaa-secret-pw
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mariadb.credentials
+              key: username
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mariadb.credentials
+              key: password
+        - name: MYSQL_DATABASE
+          value: cm_service
+        ports:
+        - name: clients-port
+          containerPort: 3306
+        volumeMounts:
+        - name: mariadb-data
+          mountPath: /var/lib/mariadb
+  volumeClaimTemplates:
+  - metadata:
+      name: mariadb-data
+      annotations:
+        volume.beta.kubernetes.io/storage-class: "mariadb-pv"
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Gi

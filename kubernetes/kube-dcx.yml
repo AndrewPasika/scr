@@ -1,0 +1,92 @@
+ ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dcx-service
+  labels:
+    app: dcx-service
+    tier: backend
+spec:
+  ports:
+  - port: 30780
+    targetPort: 30780
+    name: dcx
+  selector:
+    app: dcx-service
+    tier: backend
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dcx-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: dcx-service
+        tier: backend
+    spec:
+      imagePullSecrets:
+        - name: hub-deploy
+      containers:
+      - name: dcx-service
+        image: hub.kaaiot.io/kaaiot/dcx/dcx-service:1.0.0-SNAPSHOT
+        imagePullPolicy: Always
+        terminationMessagePolicy: FallbackToLogsOnError
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: dcx-port
+          initialDelaySeconds: 150
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: dcx-port
+          initialDelaySeconds: 1
+          periodSeconds: 1
+        volumeMounts:
+          - name: dcx-conf-volume
+            mountPath: /srv/dcx/
+        resources:
+          requests:
+            memory: 350Mi
+          limits:
+            memory: 1Gi
+        envFrom:
+        - configMapRef:
+            name: general-services-config   # Refer to the DCX service deployment documentation for creating this ConfigMap
+        env:
+        - name: INSTANCE_NAME
+          value: dcx
+        - name: CONFIG_REPOSITORY_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: scr-url-config
+              key: scr-url
+        - name: DEPENDENCY_SERVICES_WAIT_TIMEOUT_SEC
+          value: "60"
+        - name: JAVA_OPTIONS
+          value: -Xmx700m
+        - name: APP_CONFIG_PATH
+          value: /srv/dcx/service-config.yml
+        - name: JMX_PORT
+          value: "30781"
+        - name: JMX_MONITOR_USER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: jmx-monitor-credentials   # Refer to the DCX service deployment documentation for creating this Secret
+              key: password
+        ports:
+        - name: dcx-port
+          containerPort: 30780
+        - name: jmx-port
+          containerPort: 30781
+      volumes:
+        - name: dcx-conf-volume
+          configMap:
+            name: dcx-service-config
+            items: 
+            - key: dcx-config
+              path: service-config.yml

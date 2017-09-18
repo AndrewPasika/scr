@@ -1,0 +1,132 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongo.credentials
+type: Opaque
+data:
+  username:
+  password:
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: epr-service
+  labels:
+    app: epr-service
+    tier: backend
+spec:
+  type: "LoadBalancer"
+  ports:
+    # the port that this service should serve on
+  - port: 30750
+    targetPort: 30750
+    nodePort: 30750
+    name: epr-users
+  selector:
+    app: epr-service
+    tier: backend
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: epr-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: epr-service
+        tier: backend
+    spec:
+      imagePullSecrets:
+        - name: hub-deploy
+      containers:
+      - name: epr-service
+        image: hub.kaaiot.io/kaaiot/epr/epr-service:1.0.0-SNAPSHOT
+        terminationMessagePolicy: FallbackToLogsOnError
+        imagePullPolicy: Always
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: epr-port
+          initialDelaySeconds: 150
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: epr-port
+          initialDelaySeconds: 1
+          periodSeconds: 1
+        volumeMounts:
+          - name: epr-conf-volume
+            mountPath: /srv/epr/
+        resources:
+          requests:
+            memory: 350Mi
+          limits:
+            memory: 1Gi
+        envFrom:
+        - configMapRef:
+            name: general-services-config   # Refer to the EPR service deployment documentation for creating this ConfigMap
+        env:
+        - name: MONGO_DATABASE
+          value: epr_service
+        - name: MONGO_HOST
+          value: mongo.$(NAMESPACE_NAME).svc.cluster.local
+        - name: MONGO_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongo.credentials
+              key: username
+        - name: MONGO_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongo.credentials
+              key: password
+        - name: MONGO_PORT
+          value: "27017"
+        - name: MONGO_THREADS_ALLOWED_TO_BLOCK_FOR_CONNECTION_MULTIPLIER
+          value: "5"
+        - name: MONGO_CONNECTIONS_PER_HOST
+          value: "100"
+        - name: MONGO_MAX_WAIT_TIME
+          value: "120000"
+        - name: MONGO_CONNECTION_TIMEOUT
+          value: "5000"
+        - name: MONGO_SOCKET_TIMEOUT
+          value: "0"
+        - name: MONGO_SOCKET_KEEP_ALIVE
+          value: "false"
+        - name: INSTANCE_NAME
+          value: epr
+        - name: DEPENDENCY_SERVICES_WAIT_TIMEOUT_SEC
+          value: "120"    # -1 means unlimited timeout
+        - name: APP_CONFIG_PATH
+          value: /srv/epr/service-config.yml
+        - name: JAVA_OPTIONS
+          value: -Xmx700m
+        - name: JMX_MONITOR_USER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: jmx-monitor-credentials   # Refer to the EPR service deployment documentation for creating this Secret
+              key: password
+        - name: CONFIG_REPOSITORY_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: scr-url-config
+              key: scr-url
+        - name: JMX_PORT
+          value: "30751"
+        ports:
+        - name: epr-port
+          containerPort: 30750
+        - name: jmx-port
+          containerPort: 30751
+      volumes:
+        - name: epr-conf-volume
+          configMap:
+            name: epr-service-config
+            items: 
+            - key: epr-config
+              path: service-config.yml

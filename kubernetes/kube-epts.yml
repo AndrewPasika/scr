@@ -1,0 +1,96 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: epts-service
+  labels:
+    app: epts-service
+    tier: backend
+spec:
+  type: "LoadBalancer"
+  ports:
+  - port: 30740
+    targetPort: 30740
+    nodePort: 30740
+    name: epts
+  selector:
+    app: epts-service
+    tier: backend
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: epts-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: epts-service
+        tier: backend
+    spec:
+      imagePullSecrets:
+        - name: hub-deploy
+      containers:
+      - name: epts-service
+        image: hub.kaaiot.io/kaaiot/epts/epts-service:1.0.0-SNAPSHOT
+        imagePullPolicy: Always
+        terminationMessagePolicy: FallbackToLogsOnError
+        volumeMounts:
+          - name: epts-conf-volume
+            mountPath: /srv/epts/
+        resources:
+          requests:
+            memory: 350Mi
+          limits:
+            memory: 1Gi
+        envFrom:
+        - configMapRef:
+            name: general-services-config   # Refer to the EPTS service deployment documentation for creating this ConfigMap
+        env:
+        - name: INSTANCE_NAME
+          value: epts
+        - name: CASSANDRA_HOST_PORT
+          value: cassandra.$(NAMESPACE_NAME).svc.cluster.local:9042
+        - name: DEPENDENCY_SERVICES_WAIT_TIMEOUT_SEC
+          value: "120"
+        - name: APP_CONFIG_PATH
+          value: /srv/epts/service-config.yml
+        - name: JAVA_OPTIONS
+          value: -Xmx700m
+        - name: JMX_PORT
+          value: "30741"
+        - name: JMX_MONITOR_USER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: jmx-monitor-credentials   # Refer to the EPTS service deployment documentation for creating this Secret
+              key: password
+        - name: CONFIG_REPOSITORY_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: scr-url-config
+              key: scr-url
+        ports:
+        - name: epts-port
+          containerPort: 30740
+        - name: jmx-port
+          containerPort: 30741
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: epts-port
+          initialDelaySeconds: 240
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: epts-port
+          initialDelaySeconds: 1
+          periodSeconds: 1
+      volumes:
+        - name: epts-conf-volume
+          configMap:
+            name: epts-service-config
+            items: 
+            - key: epts-config
+              path: service-config.yml

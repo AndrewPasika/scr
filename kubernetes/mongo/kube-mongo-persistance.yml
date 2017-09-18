@@ -1,0 +1,76 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo
+  labels:
+    app: mongo
+    tier: persistence
+spec:
+  ports:
+    # the port that this service should serve on
+  - port: 27017
+    targetPort: 27017
+    protocol: TCP
+  selector:
+    app: mongo
+    tier: persistence
+---
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: mongo
+spec:
+  serviceName: mongo
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mongo
+        tier: persistence
+    spec:
+      containers:
+      - name: mongo
+        image: mongo:3.4.3
+        terminationMessagePolicy: FallbackToLogsOnError
+        livenessProbe:
+          tcpSocket:
+            port: clients-port
+          initialDelaySeconds: 240
+          periodSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: clients-port
+          initialDelaySeconds: 1
+          periodSeconds: 1
+        resources:
+          requests:
+            memory: 100Mi
+        env:
+        - name: GET_HOSTS_FROM
+          valueFrom:
+            configMapKeyRef:
+              name: general-services-config
+              key: GET_HOSTS_FROM
+        ports:
+        - name: clients-port
+          containerPort: 27017
+        # These volume mounts are persistent. They are like inline claims,
+        # but not exactly because the names need to match exactly one of
+        # the stateful pod volumes.
+        volumeMounts:
+        - name: mongo-data
+          mountPath: /data/db
+  # These are converted to volume claims by the controller
+  # and mounted at the paths mentioned above.
+  # do not use these in production until ssd GCEPersistentDisk or other ssd pd
+  volumeClaimTemplates:
+  - metadata:
+      name: mongo-data
+      annotations:
+        volume.beta.kubernetes.io/storage-class: "mongo-pv"
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 100Gi
