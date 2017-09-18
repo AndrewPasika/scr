@@ -1,0 +1,59 @@
+---
+common:
+  autoUpdate: 3000
+dashboards:
+  -
+    title: "Smart energy meter"
+    description: "Smart energy meter solution"
+    displayTitle: true
+    displayDescription: true
+    icons:
+      default: router/grey.svg
+      hover: router/hovered.svg
+      selected: router/orange.svg
+    isTopLevel: true
+    path: /smart-energy-meter
+    widgets:
+      -
+        height: 500
+        percentWidth: 100
+        config:
+          title: Smart meters
+          type: epList
+          displayTitle: true
+          applicationName: smart_energy
+          service: API_EPR
+          generate: true
+          generateTitle: Generate new
+          generateTimeout: 1000
+          baseUrl: api/v1
+          height: 500
+          columns:
+            -
+              display: ID
+              path: endpointId
+            -
+              display: Created
+              path: createdDate
+          itemLink:
+            path: "/smart-energy-meter/{meter_id}"
+            parameters:
+                itemJsonPath: "widgetConfig.columns[0].display"
+                name: meter_id
+          metadata: metadata
+
+  -
+    title: Smart meter
+    displayTitle: true
+    displayDescription: true
+    icons:
+      default: router/grey.svg
+      hover: router/hovered.svg
+      selected: router/orange.svg
+    isTopLevel: false
+    path: "/smart-energy-meter/:id"
+
+info:
+  logo: "http://some_path"
+  theme: night
+  title: MyCompany

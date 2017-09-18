@@ -1,0 +1,21 @@
+applications:
+- name: smart_energy
+  time-series:
+  - name: ActivePower
+    value-field: activePower
+  versions:
+  - name: smart_energy_v1
+    number: 1
+    timestamp:
+      path: "$.timestmap"
+      format: sec-unix-epoch
+      fallback-strategy: server-timestamp
+    preprocessing:
+      extraction:
+        extract-all: true
+
+
+dcx:
+ service:
+   instance:
+     name: dcx

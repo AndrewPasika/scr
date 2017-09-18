@@ -1,0 +1,10 @@
+applications:
+- name: smart_energy
+  versions:
+  - name: smart_energy_v1
+    number: 1
+    extensions:
+    - name: dcx
+      endpointAware: true
+    - name: epmx
+      endpointAware: true
