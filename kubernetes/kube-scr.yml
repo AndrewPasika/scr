@@ -66,9 +66,9 @@ spec:
         - name: CONFIGURATION_REPOSITORY_URL
           value: https://gitlab.kaaiot.io/evangelism/solutions/smart-energy/blueprint.git
         - name: CONFIGURATION_REPOSITORY_USERNAME
-          value: "webui-test"
+          value: "demo-user"
         - name: CONFIGURATION_REPOSITORY_PASSWORD
-          value: "webui-pass"
+          value: "demo-pass"
         - name: CONFIGURATION_REPOSITORY_SEARCH_PATHS
           value: "/scr"
         - name: DEPENDENCY_SERVICES_WAIT_TIMEOUT_SEC
