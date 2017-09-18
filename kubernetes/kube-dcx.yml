@@ -1,4 +1,4 @@
- ---
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -46,9 +46,6 @@ spec:
             port: dcx-port
           initialDelaySeconds: 1
           periodSeconds: 1
-        volumeMounts:
-          - name: dcx-conf-volume
-            mountPath: /srv/dcx/
         resources:
           requests:
             memory: 350Mi
@@ -69,8 +66,6 @@ spec:
           value: "60"
         - name: JAVA_OPTIONS
           value: -Xmx700m
-        - name: APP_CONFIG_PATH
-          value: /srv/dcx/service-config.yml
         - name: JMX_PORT
           value: "30781"
         - name: JMX_MONITOR_USER_PASSWORD
@@ -83,10 +78,3 @@ spec:
           containerPort: 30780
         - name: jmx-port
           containerPort: 30781
-      volumes:
-        - name: dcx-conf-volume
-          configMap:
-            name: dcx-service-config
-            items: 
-            - key: dcx-config
-              path: service-config.yml

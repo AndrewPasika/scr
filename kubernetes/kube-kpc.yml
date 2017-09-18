@@ -59,9 +59,7 @@ spec:
             port: health-port
           initialDelaySeconds: 1
           periodSeconds: 1
-        volumeMounts:
-          - name: kpc-conf-volume
-            mountPath: /srv/kpc/
+#        volumeMounts:
 #          - mountPath: /usr/lib/kpc-service/security/keyStore
 #            name: key-store-volume
 #            readOnly: true
@@ -110,8 +108,6 @@ spec:
               key: scr-url
           # Point to the location of the service configuration and customized configuration for transport protocols such as MQTT or CoAP.
           # If variable is not specified or value is empty, the service will get default transport protocols configuration in application-<protocol-name>.properties file.
-        - name: APP_CONFIG_PATH
-          value: /srv/kpc/service-config.yml
         - name: JMX_PORT
           value: "30722"
         ports:
@@ -121,13 +117,7 @@ spec:
           containerPort: 30721
         - name: jmx-port
           containerPort: 30722
-      volumes:
-        - name: kpc-conf-volume
-          configMap:
-            name: kpc-service-config
-            items: 
-            - key: kpc-config
-              path: service-config.yml
+#      volumes:
 #        - name: trust-store-volume
 #          secret:
 #            secretName: mqtt.server.trustStore

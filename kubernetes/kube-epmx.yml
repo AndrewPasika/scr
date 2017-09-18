@@ -1,4 +1,4 @@
- ---
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -46,9 +46,6 @@ spec:
             port: epmx-port
           initialDelaySeconds: 1
           periodSeconds: 1
-        volumeMounts:
-          - name: epmx-conf-volume
-            mountPath: /srv/epmx/
         resources:
           requests:
             memory: 350Mi
@@ -66,8 +63,6 @@ spec:
           value: "120"
         - name: JAVA_OPTIONS
           value: -Xmx700m
-        - name: APP_CONFIG_PATH
-          value: /srv/epmx/service-config.yml
         - name: JMX_PORT
           value: "30801"
         - name: JMX_MONITOR_USER_PASSWORD
@@ -85,10 +80,3 @@ spec:
           containerPort: 30800
         - name: jmx-port
           containerPort: 30801
-      volumes:
-        - name: epmx-conf-volume
-          configMap:
-            name: epmx-service-config
-            items: 
-            - key: epmx-config
-              path: service-config.yml

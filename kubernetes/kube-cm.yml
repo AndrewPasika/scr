@@ -49,9 +49,6 @@ spec:
             port: cm-port
           initialDelaySeconds: 1
           periodSeconds: 1
-        volumeMounts:
-          - name: cm-conf-volume
-            mountPath: /srv/cm/
         resources:
           requests:
             memory: 350Mi
@@ -71,8 +68,6 @@ spec:
           value: http://epr-service.$(NAMESPACE_NAME).svc.cluster.local:30750
         - name: DEPENDENCY_SERVICES_WAIT_TIMEOUT_SEC
           value: "60"    # -1 means unlimited timeout
-        - name: APP_CONFIG_PATH
-          value: /srv/cm/service-config.yml
         - name: JAVA_OPTIONS
           value: -Xmx700m
         - name: JMX_PORT
@@ -94,10 +89,3 @@ spec:
           containerPort: 30730
         - name: jmx-port
           containerPort: 30731
-      volumes:
-        - name: cm-conf-volume
-          configMap:
-            name: cm-service-config
-            items: 
-            - key: cm-config
-              path: service-config.yml
