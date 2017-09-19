@@ -2,6 +2,21 @@
 common:
   autoUpdate: 3000
 dashboards:
+
+  -
+    title: Kaa Web Dashboard
+    displayTitle: false
+    description: Welcome to Kaa Web Dashboard!
+    displayDescription: false
+    path: /
+    isTopLevel: false
+    widgets:
+      - height: 500
+        percentWidth: 100
+        config:
+          content: null
+          type: rawHTML
+          transparent: true
   -
     title: "Smart energy meter"
     description: "Smart energy meter solution"
