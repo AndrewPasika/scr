@@ -63,9 +63,9 @@ spec:
             port: meter-port
           initialDelaySeconds: 1
           periodSeconds: 1
-        volumeMounts:
-          - name: meter-simulator-conf-volume
-            mountPath: /srv/meter-simulator/
+#        volumeMounts:
+#          - name: meter-simulator-conf-volume
+#            mountPath: /srv/meter-simulator/
         resources:
           requests:
             memory: 350Mi
@@ -106,10 +106,10 @@ spec:
         - name: meter-simulator-conf-volume
           hostPath:
             path: /usr/lib/meter-simulator-service/conf
-      volumes:
-        - name: meter-simulator-conf-volume
-          configMap:
-            name: meter-simulator-service-config
-            items: 
-            - key: meter-simulator-config
-              path: service-config.yml
+#      volumes:
+#        - name: meter-simulator-conf-volume
+#          configMap:
+#            name: meter-simulator-service-config
+#            items:
+#            - key: meter-simulator-config
+#              path: service-config.yml
