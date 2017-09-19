@@ -3,3 +3,16 @@ applications:
   versions:
   - name: smart_energy_v1
     number: 1
+    metadata-keys:
+    - name: uid
+      write-enabled: true
+    - name: hwvr
+      write-enabled: true
+    - name: swvr
+      write-enabled: true
+    - name: ct
+      write-enabled: true
+    - name: pt
+      write-enabled: true
+    - name: measmode
+      write-enabled: true
