@@ -76,7 +76,7 @@ spec:
             name: general-services-config   # Refer to the smart.energy service deployment documentation for creating this ConfigMap
         env:
         - name: INSTANCE_NAME
-          value: meter-simulator
+          value: meter
         - name: DEPENDENCY_SERVICES_WAIT_TIMEOUT_SEC
           value: "60"
         - name: JAVA_OPTIONS
