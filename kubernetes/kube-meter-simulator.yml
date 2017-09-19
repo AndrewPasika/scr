@@ -54,13 +54,13 @@ spec:
         livenessProbe:
           httpGet:
             path: /health
-            port: meter-simulator-port
+            port: meter-port
           initialDelaySeconds: 150
           periodSeconds: 5
         readinessProbe:
           httpGet:
             path: /health
-            port: meter-simulator-port
+            port: meter-port
           initialDelaySeconds: 1
           periodSeconds: 1
         volumeMounts:
@@ -98,7 +98,7 @@ spec:
         - name: JMX_PORT
           value: "32704"
         ports:
-        - name: meter-simulator-port
+        - name: meter-port
           containerPort: 32703
         - name: jmx-port
           containerPort: 32704
