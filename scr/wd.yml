@@ -54,8 +54,8 @@ dashboards:
     path: "/smart-energy-meter/:id"
     widgets:
       -
-        height: 350
-        percentWidth: 50
+        height: 500
+        percentWidth: 30
         config:
           title: Metadata
           type: metadata
@@ -93,6 +93,23 @@ dashboards:
               dataType: string
               isEditable: true
               section: metadata
+      -
+        height: 500
+        percentWidth: 70
+        config:
+          title: "Active Power"
+          baseUrl: api/v1
+          displayTitle: true
+          limit: 1000
+          service: API_EPTS
+          type: multiSeriesChart
+          timeSeriesName: ActivePower
+          dataSource:
+            showLast: 200
+            timeSeries:
+              name: ActivePower
+            endpoints: '${dashboard.id}'
+
 info:
   logo: "http://some_path"
   theme: night
