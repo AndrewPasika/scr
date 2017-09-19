@@ -1,19 +1,4 @@
 ---
-# It's possible to crete ConfigMap from template described below
-# or using `kubectl create configmap <map-name> --from-file=<key-name>=<path-to-file>` command
-# Use `meter-simulator-service-config` as a map name and `meter-simulator-config` as a key name.
-# Example command: `kubectl create configmap meter-simulator-service-config --from-file=meter-simulator-config=/srv/meter-simulator/service-config.yml`
-#apiVersion: v1
-#kind: ConfigMap
-#metadata:
-#  name: meter-simulator-service-config
-#  labels:
-#    name: meter-simulator-service-config
-#data:
-#  meter-simulator-config: |
-#    # Add service configuration here
-#    
----
 apiVersion: v1
 kind: Service
 metadata:
