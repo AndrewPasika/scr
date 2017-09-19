@@ -1,0 +1,16 @@
+client:
+  id: mqtt-meter-client
+  call-frequency: 1000 # one call per the period in millis
+  reconnect:
+    max-attempts: 10 # -1 - client infinitely reconnects to server
+    retry-timeout-millis: 5000
+  topic:
+    protocol-version: kp1
+    app-version-name: smart_energy_v1
+    data-collection-extension:
+       name: dcx
+       publish-data-path: "json"
+
+kpc:
+  server:
+    uri: http://kpc-service.default.svc.cluster.local:30720

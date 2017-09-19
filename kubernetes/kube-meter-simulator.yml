@@ -1,0 +1,115 @@
+---
+# It's possible to crete ConfigMap from template described below
+# or using `kubectl create configmap <map-name> --from-file=<key-name>=<path-to-file>` command
+# Use `meter-simulator-service-config` as a map name and `meter-simulator-config` as a key name.
+# Example command: `kubectl create configmap meter-simulator-service-config --from-file=meter-simulator-config=/srv/meter-simulator/service-config.yml`
+#apiVersion: v1
+#kind: ConfigMap
+#metadata:
+#  name: meter-simulator-service-config
+#  labels:
+#    name: meter-simulator-service-config
+#data:
+#  meter-simulator-config: |
+#    # Add service configuration here
+#    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: meter-simulator-service
+  labels:
+    app: meter-simulator-service
+    tier: backend
+spec:
+  type: "LoadBalancer"
+  ports:
+  - port: 32703
+    targetPort: 32703
+    nodePort: 32703
+    name: meter-simulator
+  selector:
+    app: meter-simulator-service
+    tier: backend
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: meter-simulator-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: meter-simulator-service
+        tier: backend
+    spec:
+      imagePullSecrets:
+        - name: hub-deploy
+      containers:
+      - name: meter-simulator-service
+        image: hub.kaaiot.io/evangelism/solutions/smart-energy/meter-simulator/meter-simulator-service:1.0.0-SNAPSHOT
+        imagePullPolicy: Always
+        terminationMessagePolicy: FallbackToLogsOnError
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: meter-simulator-port
+          initialDelaySeconds: 150
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: meter-simulator-port
+          initialDelaySeconds: 1
+          periodSeconds: 1
+        volumeMounts:
+          - name: meter-simulator-conf-volume
+            mountPath: /srv/meter-simulator/
+        resources:
+          requests:
+            memory: 350Mi
+          limits:
+            memory: 1Gi
+        envFrom:
+        - configMapRef:
+            name: general-services-config   # Refer to the smart.energy service deployment documentation for creating this ConfigMap
+        env:
+        - name: INSTANCE_NAME
+          value: meter-simulator
+        - name: DEPENDENCY_SERVICES_WAIT_TIMEOUT_SEC
+          value: "60"
+        - name: JAVA_OPTIONS
+          value: -Xmx700m
+        - name: JMX_MONITOR_USER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: jmx-monitor-credentials   # Refer to the smart.energy service deployment documentation for creating this Secret
+              key: password
+        - name: CONFIG_REPOSITORY_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: scr-url-config
+              key: scr-url
+        - name: SERVICE_CONFIG_PATH
+          value: /srv/meter-simulator/service-config.yml
+        - name: KPC_HOST_PORT
+          value: tcp://kpc-service.default.svc.cluster.local:1883
+        - name: JMX_PORT
+          value: "32704"
+        ports:
+        - name: meter-simulator-port
+          containerPort: 32703
+        - name: jmx-port
+          containerPort: 32704
+      volumes:
+        - name: meter-simulator-conf-volume
+          hostPath:
+            path: /usr/lib/meter-simulator-service/conf
+      volumes:
+        - name: meter-simulator-conf-volume
+          configMap:
+            name: meter-simulator-service-config
+            items: 
+            - key: meter-simulator-config
+              path: service-config.yml
