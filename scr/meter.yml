@@ -11,10 +11,6 @@ client:
        name: dcx
        publish-data-path: "json"
 
-kpc:
-  server:
-    uri: tcp://kpc-service.default.svc.cluster.local:1883
-
 simulator:
   meters:
     - token: meter-1
