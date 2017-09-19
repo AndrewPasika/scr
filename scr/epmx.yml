@@ -16,3 +16,5 @@ applications:
       write-enabled: true
     - name: measmode
       write-enabled: true
+    - name: token
+      write-enabled: true
