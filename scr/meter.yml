@@ -17,6 +17,6 @@ kpc:
 
 simulator:
   meters:
-    - meter-1
-    - meter-2
-    - meter-3
+    - token: meter-1
+    - token: meter-2
+    - token: meter-3
