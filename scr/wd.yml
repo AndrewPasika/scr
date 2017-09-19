@@ -52,7 +52,47 @@ dashboards:
       selected: router/orange.svg
     isTopLevel: false
     path: "/smart-energy-meter/:id"
-
+    widgets:
+      -
+        height: 350
+        percentWidth: 50
+        config:
+          title: Metadata
+          type: metadata
+          allFields: true
+          service: API_EPR
+          baseUrl: api/v1
+          fields:
+            - name: uid
+              displayName: Device UID
+              dataType: string
+              isEditable: true
+              section: metadata
+            - name: hwvr
+              displayName: HW version
+              dataType: string
+              isEditable: true
+              section: metadata
+            - name: swvr
+              displayName: FW version
+              dataType: string
+              isEditable: true
+              section: metadata
+            - name: ct
+              displayName: Current transformer ratio
+              dataType: number
+              isEditable: true
+              section: metadata
+            - name: pt
+              displayName: Voltage transformer ratio
+              dataType: number
+              isEditable: true
+              section: metadata
+            - name: measmode
+              displayName: Wiring mode
+              dataType: string
+              isEditable: true
+              section: metadata
 info:
   logo: "http://some_path"
   theme: night
