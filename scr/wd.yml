@@ -12,7 +12,7 @@ dashboards:
       hover: router/hovered.svg
       selected: router/orange.svg
     isTopLevel: true
-    path: /smart-energy-meter
+    path: /meter
     widgets:
       -
         height: 500
@@ -30,15 +30,24 @@ dashboards:
           height: 500
           columns:
             -
+              display: UID
+              path: metadata.uid
+            -
+              display: HW version
+              path: metadata.hwvr
+            -
+              display: FW version
+              path: metadata.swvr
+            -
               display: ID
               path: endpointId
             -
               display: Created
               path: createdDate
           itemLink:
-            path: "/smart-energy-meter/{meter_id}"
+            path: "/meter/{meter_id}"
             parameters:
-                itemJsonPath: "widgetConfig.columns[0].display"
+                itemJsonPath: "widgetConfig.columns[3].display"
                 name: meter_id
           metadata: metadata
 
@@ -51,7 +60,7 @@ dashboards:
       hover: router/hovered.svg
       selected: router/orange.svg
     isTopLevel: false
-    path: "/smart-energy-meter/:id"
+    path: "/meter/:id"
     widgets:
       -
         height: 350
@@ -59,7 +68,6 @@ dashboards:
         config:
           title: Metadata
           type: metadata
-          allFields: true
           service: API_EPR
           baseUrl: api/v1
           fields:
