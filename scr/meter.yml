@@ -14,3 +14,9 @@ client:
 kpc:
   server:
     uri: tcp://kpc-service.default.svc.cluster.local:1883
+
+simulator:
+  meters:
+    - meter-1
+    - meter-2
+    - meter-3
