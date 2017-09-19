@@ -59,37 +59,57 @@ dashboards:
         config:
           title: Metadata
           type: metadata
-          allFields: true
+          allFields: false
           service: API_EPR
           baseUrl: api/v1
           fields:
+            - name: name
+              displayName: "Application version name"
+              dataType: string
+              isEditable: false
+              section: applicationVersionInfo
+            - name: registeredDate
+              displayName: "Registered date"
+              dataType: string
+              isEditable: false
+              section: applicationVersionInfo
+            - name: createdDate
+              displayName: "Created date"
+              dataType: string
+              isEditable: false
+              section: ""
+            - name: endpointId
+              displayName: "Endpoint ID"
+              dataType: string
+              isEditable: false
+              section: ""
             - name: uid
-              displayName: Device UID
+              displayName: "Device UID"
               dataType: string
               isEditable: true
               section: metadata
             - name: hwvr
-              displayName: HW version
+              displayName: "HW version"
               dataType: string
               isEditable: true
               section: metadata
             - name: swvr
-              displayName: FW version
+              displayName: "FW version"
               dataType: string
               isEditable: true
               section: metadata
             - name: ct
-              displayName: Current transformer ratio
+              displayName: "Current transformer ratio"
               dataType: number
               isEditable: true
               section: metadata
             - name: pt
-              displayName: Voltage transformer ratio
+              displayName: "Voltage transformer ratio"
               dataType: number
               isEditable: true
               section: metadata
             - name: measmode
-              displayName: Wiring mode
+              displayName: "Wiring mode"
               dataType: string
               isEditable: true
               section: metadata
