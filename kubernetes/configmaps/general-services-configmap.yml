@@ -8,4 +8,3 @@ data:
   NAMESPACE_NAME: default
   GET_HOSTS_FROM: dns
   NATS_HOST_PORT: nats://nats-service.default.svc.cluster.local:4222
-  JMX_MONITOR_USER_PASSWORD: monitor

@@ -2,7 +2,6 @@
 common:
   autoUpdate: 3000
 dashboards:
-
   -
     title: Kaa Web Dashboard
     displayTitle: false
