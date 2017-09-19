@@ -13,4 +13,4 @@ client:
 
 kpc:
   server:
-    uri: http://kpc-service.default.svc.cluster.local:30720
+    uri: tcp://kpc-service.default.svc.cluster.local:1883
