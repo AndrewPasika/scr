@@ -14,5 +14,5 @@ kubectl delete -f kubernetes/mongo/kube-mongo-persistence.yml
 
 # Deletes data
 sudo rm -rf /usr/lib/data/*
-sudo rm -rf /usr/lib/cassandra-epts-data/*
+sudo rm -rf /usr/lib/cassandra-data/*
 sudo rm -rf /usr/lib/mongo-epr-data/*
