@@ -9,7 +9,7 @@ applications:
   - name: smart_energy_v1
     number: 1
     timestamp:
-      path: "$.timestmap"
+      path: "$.timestamp"
       format: sec-unix-epoch
       fallback-strategy: server-timestamp
     preprocessing:
