@@ -12,6 +12,8 @@ client:
        publish-data-path: "json"
 
 simulator:
+  active-energy:
+    period: 6 # in months
   meters:
     - token: meter-1
       metadata:
