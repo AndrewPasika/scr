@@ -134,12 +134,27 @@ dashboards:
           limit: 1000
           service: API_EPTS
           type: multiSeriesChart
-          timeSeriesName: ActivePower
           dataSource:
             showLast: 200
             timeSeries:
               name: ActivePower
             endpoints: '${dashboard.id}'
+      -
+        height: 500
+        percentWidth: 70
+        config:
+          title: "Accumulated Active Energy"
+          baseUrl: api/v1
+          displayTitle: true
+          limit: 1000
+          service: API_EPTS
+          type: multiSeriesChart
+          dataSource:
+            showLast: 15552000 # six month = 6*30*24*60*60
+            timeSeries:
+              name: AccumulatedActiveEnergy
+            endpoints: '${dashboard.id}'
+
   - title: Kaa Web Dashboard
     displayTitle: false
     description: Welcome to Kaa Web Dashboard!

@@ -3,6 +3,8 @@ applications:
   time-series:
   - name: ActivePower
     value-field: activePower
+  - name: AccumulatedActiveEnergy
+    value-field: accActEng
   versions:
   - name: smart_energy_v1
     number: 1
