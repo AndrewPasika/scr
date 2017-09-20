@@ -14,5 +14,26 @@ client:
 simulator:
   meters:
     - token: meter-1
+      metadata:
+        uid: F4B85E018E55
+        hwvr: GASM Beta rev.5
+        swvr: v0.4-RC5
+        ct: 2000
+        pt: 1.0
+        measmode: 9S/16S
     - token: meter-2
+      metadata:
+        uid: U9XZ4GK5MRYG
+        hwvr: GASM Beta rev.5
+        swvr: v0.4-RC5
+        ct: 2000
+        pt: 1.0
+        measmode: 9S/16S
     - token: meter-3
+      metadata:
+        uid: A0HYYEVA6Q45
+        hwvr: GASM Beta rev.5
+        swvr: v0.4-RC5
+        ct: 2000
+        pt: 1.0
+        measmode: 9S/16S
