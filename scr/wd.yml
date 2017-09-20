@@ -141,7 +141,7 @@ dashboards:
             endpoints: '${dashboard.id}'
       -
         height: 500
-        percentWidth: 70
+        percentWidth: 100
         config:
           title: "Accumulated Active Energy"
           baseUrl: api/v1
