@@ -25,7 +25,7 @@ dashboards:
       default: router/grey.svg
       hover: router/hovered.svg
       selected: router/orange.svg
-    isTopLevel: true
+    isTopLevel: false
     path: /meter
     widgets:
       -
