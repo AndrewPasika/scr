@@ -160,7 +160,7 @@ dashboards:
     description: Welcome to Kaa Web Dashboard!
     displayDescription: false
     path: /
-    isTopLevel: true
+    isTopLevel: false
     widgets:
       - height: 500
         percentWidth: 100
