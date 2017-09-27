@@ -3,6 +3,7 @@ common:
   autoUpdate: 3000
 dashboards:
   -
+    id: 4c435d3e-90c2-420d-866c-ea410ad35dac
     title: Kaa Web Dashboard
     displayTitle: false
     description: Welcome to Kaa Web Dashboard!
@@ -17,14 +18,15 @@ dashboards:
           type: rawHTML
           transparent: true
   -
+    id: 4c435d3e-90c2-420d-866c-ea410ad35d12
     title: "Smart energy meter"
     description: "Smart energy meter solution"
     displayTitle: true
     displayDescription: true
     icons:
-      default: router/grey.svg
-      hover: router/hovered.svg
-      selected: router/orange.svg
+      default: smartEnergy/dashboard/red.svg
+      hover: smartEnergy/dashboard/red.svg
+      selected: smartEnergy/dashboard/white.svg
     isTopLevel: true
     path: /meter
     widgets:
@@ -37,9 +39,6 @@ dashboards:
           displayTitle: true
           applicationName: smart_energy
           service: API_EPR
-          generate: true
-          generateTitle: Generate new
-          generateTimeout: 1000
           baseUrl: api/v1
           height: 500
           columns:
@@ -67,25 +66,29 @@ dashboards:
                 itemJsonPath: "widgetConfig.columns[4].display"
                 name: meter_id
           metadata: metadata
-
   -
+    id: 4c435d3e-90c2-420d-866c-ea410ad35d13
     title: Smart meter
     displayTitle: true
     displayDescription: true
     icons:
-      default: router/grey.svg
-      hover: router/hovered.svg
-      selected: router/orange.svg
+      default: smartEnergy/dashboard/red.svg
+      hover: smartEnergy/dashboard/red.svg
+      selected: smartEnergy/dashboard/white.svg
     isTopLevel: false
     path: "/meter/:id"
+    dashboardControls:
+      - type: timeFrame
+        default: 1w
     widgets:
       -
-        height: 500
-        percentWidth: 30
+        height: 430
+        percentWidth: 47
         config:
-          title: Metadata
+          title: Energy meter
           type: metadata
           allFields: false
+          allEditable: false
           service: API_EPR
           baseUrl: api/v1
           fields:
@@ -125,38 +128,81 @@ dashboards:
               isEditable: true
               section: metadata
       -
-        height: 500
-        percentWidth: 70
+        height: 430
+        percentWidth: 53
         config:
-          title: "Active Power"
+          title: Real-time active power
           baseUrl: api/v1
           displayTitle: true
           limit: 1000
           service: API_EPTS
           type: multiSeriesChart
+          realTime: true
           dataSource:
             showLast: 200
             timeSeries:
               name: ActivePower
             endpoints: '${dashboard.id}'
-      -
-        height: 500
-        percentWidth: 100
+      - percentWidth: 60
+        height: 465
         config:
-          title: "Accumulated Active Energy"
-          baseUrl: api/v1
           displayTitle: true
-          limit: 1000
+          title: "Accumulated active energy"
+          type: multiSeriesColumn
           service: API_EPTS
-          type: multiSeriesChart
+          baseUrl: api/v1
+          limit: 1000
           dataSource:
-            showLast: 15552000 # six month = 6*30*24*60*60
             timeSeries:
               name: AccumulatedActiveEnergy
+              displayName: J
             endpoints: '${dashboard.id}'
-
-  - title: Kaa Web Dashboard
-    displayTitle: false
+      - height: 465
+        percentWidth: 40
+        config:
+          displayTitle: true
+          title: Statistics
+          type: statistics
+          service: API_EPTS
+          baseUrl: api/v1
+          kWprice: 1.5
+          priceCurrency: $
+          measureUnit: kWh
+          dataSource:
+            timeSeries:
+              name: AccumulatedActiveEnergy
+          timeSeriesParams:
+            - name: endpointId
+              itemJsonPath: dashboardRouteParams.id
+          devices:
+            - name: washer
+              icon: devicesIcons/washer.svg
+              consumeOptionPercent: 7
+            - name: table_lamp
+              icon: devicesIcons/table_lamp.svg
+              consumeOptionPercent: 1
+            - name: luster
+              icon: devicesIcons/luster.svg
+              consumeOptionPercent: 15
+            - name: fridge
+              icon: devicesIcons/fridge.svg
+              consumeOptionPercent: 17
+            - name: camcorder
+              icon: devicesIcons/camcorder.svg
+              consumeOptionPercent: 4
+            - name: coffee_machine
+              icon: devicesIcons/coffee_machine.svg
+              consumeOptionPercent: 25
+            - name: microwave
+              icon: devicesIcons/microwave.svg
+              consumeOptionPercent: 11
+            - name: conditioner
+              icon: devicesIcons/conditioner.svg
+              consumeOptionPercent: 20
+  -
+    id: 4c435d3e-90c2-420d-866c-ea410ad35da4
+    title: Kaa Web Dashboard
+    displayTitle: true
     description: Welcome to Kaa Web Dashboard!
     displayDescription: false
     path: /
