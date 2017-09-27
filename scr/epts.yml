@@ -2,9 +2,12 @@ applications:
 - name: smart_energy
   time-series:
   - name: ActivePower
-    value-field: activePower
+    value-field: ${applications.versions.preprocessing.transformation.converters[0].output-field}
+  - name: TotalAccumulatedActiveEnergy
+    value-field: ${applications.versions.preprocessing.transformation.converters[1].output-field}
   - name: AccumulatedActiveEnergy
-    value-field: accActEng
+    value-field: ${applications.versions.preprocessing.transformation.converters[2].output-field}
+  - name:
   versions:
   - name: smart_energy_v1
     number: 1
@@ -15,7 +18,17 @@ applications:
     preprocessing:
       extraction:
         extract-all: true
-
+      transformation:
+        converters:
+          - name: summingConverter
+            input-fields: pa, pb, pc
+            output-field: activePower
+          - name: summingConverter
+            input-fields: epa, epb, epc
+            output-field: totalAccActEng
+          - name: accumulatedActiveEnergyConverter
+            input-fields: epa, epb, epc
+            output-field: accActEng
 
 dcx:
  service:
