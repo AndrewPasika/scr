@@ -7,7 +7,6 @@ applications:
     value-field: ${applications.versions.preprocessing.transformation.converters[1].output-field}
   - name: AccumulatedActiveEnergy
     value-field: ${applications.versions.preprocessing.transformation.converters[2].output-field}
-  - name:
   versions:
   - name: smart_energy_v1
     number: 1
