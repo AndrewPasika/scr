@@ -147,6 +147,35 @@ dashboards:
             timeSeries:
               name: AccumulatedActiveEnergy
             endpoints: '${dashboard.id}'
+      -
+        config:
+          baseUrl: api/v1
+          dataPath: value
+          displayPostfix: rpm
+          displayScale: 0
+          displayTitle: true
+          emptyQueriesMax: 3
+          ranges:
+            highCritical: 5000
+            highWarning: 5000
+            lowCritical: 0
+            lowWarning: 0
+            max: 5000
+            min: 2000
+            step: 500
+          service: API_EPTS
+          type: gauge
+          timeSegment: 5
+          timeSeriesName: TotalAccumulatedActiveEnergy
+          timeSeriesParams:
+            -
+              itemJsonPath: dashboardRouteParams.id
+              name: endpointId
+          title: "Total accumulated active energy"
+          skin: RadialModernBorder270
+          updateInterval: 0.5
+        height: 500
+        percentWidth: 33.33
 
   - title: Kaa Web Dashboard
     displayTitle: false
