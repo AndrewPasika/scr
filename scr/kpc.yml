@@ -1,3 +1,6 @@
+nats:
+  urls: nats://nats-service.default.svc.cluster.local:4222
+
 applications:
 - name: smart_energy
   versions:
