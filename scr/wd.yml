@@ -95,37 +95,30 @@ dashboards:
             - name: uid
               displayName: Device UID
               dataType: string
-              isEditable: true
               section: metadata
             - name: token
               displayName: Endpoint token
               dataType: string
-              isEditable: false
               section: metadata
             - name: hwvr
               displayName: HW version
               dataType: string
-              isEditable: true
               section: metadata
             - name: swvr
               displayName: FW version
               dataType: string
-              isEditable: true
               section: metadata
             - name: ct
               displayName: Current transformer ratio
               dataType: number
-              isEditable: true
               section: metadata
             - name: pt
               displayName: Voltage transformer ratio
               dataType: number
-              isEditable: true
               section: metadata
             - name: measmode
               displayName: Wiring mode
               dataType: string
-              isEditable: true
               section: metadata
       -
         height: 430
