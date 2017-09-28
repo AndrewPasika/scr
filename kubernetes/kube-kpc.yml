@@ -1,13 +1,3 @@
-#---
-#apiVersion: v1
-#kind: Secret
-#metadata:
-#  name: security.passwords
-#type: Opaque
-#data:
-#  keyStorePassword: a2V5X3N0b3JlX3Bhc3M=
-#  keyPassword: a2V5X3Bhc3M=
-#  trustStorePassword: dHJ1c3Rfc3RvcmVfcGFzcw==
 ---
 apiVersion: v1
 kind: Service
@@ -19,7 +9,6 @@ metadata:
 spec:
   type: "LoadBalancer"
   ports:
-    # the port that this service should serve on
   - port: 1883
     targetPort: 1883
     nodePort: 30720
@@ -59,16 +48,6 @@ spec:
             port: health-port
           initialDelaySeconds: 1
           periodSeconds: 1
-#        volumeMounts:
-#          - mountPath: /usr/lib/kpc-service/security/keyStore
-#            name: key-store-volume
-#            readOnly: true
-#          - mountPath: /usr/lib/kpc-service/security/trustStore
-#            name: trust-store-volume
-#            readOnly: true
-#          - mountPath: /usr/lib/kpc-service/security/passwords
-#            name: passwords-volume
-#            readOnly: true
         resources:
           requests:
             memory: 350Mi
@@ -82,10 +61,6 @@ spec:
           value: http://cm-service.$(NAMESPACE_NAME).svc.cluster.local:30730
         - name: CM_INSTANCE_NAME
           value: cm
-#        - name: REDIS_HOST
-#          value: redis-master.$(NAMESPACE_NAME).svc.cluster.local
-#        - name: REDIS_PORT
-#          value: "6379"
         - name: DEPENDENCY_SERVICES_WAIT_TIMEOUT_SEC
           value: "60"    # -1 means unlimited timeout
         - name: JAVA_OPTIONS
@@ -117,13 +92,3 @@ spec:
           containerPort: 30721
         - name: jmx-port
           containerPort: 30722
-#      volumes:
-#        - name: trust-store-volume
-#          secret:
-#            secretName: mqtt.server.trustStore
-#        - name: key-store-volume
-#          secret:
-#            secretName: mqtt.server.keystore
-#        - name: passwords-volume
-#          secret:
-#            secretName: security.passwords

@@ -34,7 +34,7 @@ spec:
         - name: hub-deploy
       containers:
       - name: wd-service
-        image: hub.kaaiot.io/kaaiot/wd/wd-service:1.0.0-SNAPSHOT
+        image: hub.kaaiot.io/evangelism/wd/wdsmartenergy:1.0.0-SNAPSHOT
         imagePullPolicy: Always
         volumeMounts:
           - mountPath: /usr/src/web-dashboard/conf
