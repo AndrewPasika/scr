@@ -1,13 +1,3 @@
-#---
-#apiVersion: v1
-#kind: Secret
-#metadata:
-#  name: security.passwords
-#type: Opaque
-#data:
-#  keyStorePassword: a2V5X3N0b3JlX3Bhc3M=
-#  keyPassword: a2V5X3Bhc3M=
-#  trustStorePassword: dHJ1c3Rfc3RvcmVfcGFzcw==
 ---
 apiVersion: v1
 kind: Service
@@ -19,7 +9,6 @@ metadata:
 spec:
   type: "LoadBalancer"
   ports:
-    # the port that this service should serve on
   - port: 1883
     targetPort: 1883
     nodePort: 30720
@@ -40,8 +29,6 @@ spec:
         app: kpc-service
         tier: backend
     spec:
-      imagePullSecrets:
-        - name: hub-deploy
       containers:
       - name: kpc-service
         image: hub.kaaiot.io/kaaiot/kpc/kpc-service:1.0.0-SNAPSHOT
@@ -59,57 +46,16 @@ spec:
             port: health-port
           initialDelaySeconds: 1
           periodSeconds: 1
-#        volumeMounts:
-#          - mountPath: /usr/lib/kpc-service/security/keyStore
-#            name: key-store-volume
-#            readOnly: true
-#          - mountPath: /usr/lib/kpc-service/security/trustStore
-#            name: trust-store-volume
-#            readOnly: true
-#          - mountPath: /usr/lib/kpc-service/security/passwords
-#            name: passwords-volume
-#            readOnly: true
         resources:
           requests:
             memory: 350Mi
           limits:
             memory: 1800Mi
-        envFrom:
-        - configMapRef:
-            name: general-services-config   # Refer to the KPC service deployment documentation for creating this ConfigMap
         env:
-        - name: CREDENTIAL_HOST_PORT
-          value: http://cm-service.$(NAMESPACE_NAME).svc.cluster.local:30730
-        - name: CM_INSTANCE_NAME
-          value: cm
-#        - name: REDIS_HOST
-#          value: redis-master.$(NAMESPACE_NAME).svc.cluster.local
-#        - name: REDIS_PORT
-#          value: "6379"
-        - name: DEPENDENCY_SERVICES_WAIT_TIMEOUT_SEC
-          value: "60"    # -1 means unlimited timeout
         - name: JAVA_OPTIONS
           value: -Xmx1500m
         - name: INSTANCE_NAME
           value: kpc
-        - name: CLIENT_ENABLE_AUTH
-          value: "false"
-        - name: CERTIFICATE_CM_VALIDATION
-          value: "false"
-        - name: JMX_MONITOR_USER_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: jmx-monitor-credentials   # Refer to the KPC service deployment documentation for creating this Secret
-              key: password
-        - name: CONFIG_REPOSITORY_SERVICE_URL
-          valueFrom:
-            configMapKeyRef:
-              name: scr-url-config
-              key: scr-url
-          # Point to the location of the service configuration and customized configuration for transport protocols such as MQTT or CoAP.
-          # If variable is not specified or value is empty, the service will get default transport protocols configuration in application-<protocol-name>.properties file.
-        - name: JMX_PORT
-          value: "30722"
         ports:
         - name: transport-port
           containerPort: 1883
@@ -117,13 +63,3 @@ spec:
           containerPort: 30721
         - name: jmx-port
           containerPort: 30722
-#      volumes:
-#        - name: trust-store-volume
-#          secret:
-#            secretName: mqtt.server.trustStore
-#        - name: key-store-volume
-#          secret:
-#            secretName: mqtt.server.keystore
-#        - name: passwords-volume
-#          secret:
-#            secretName: security.passwords
