@@ -2,7 +2,7 @@ applications:
 - name: smart_energy
   time-series:
   - name: ActivePower
-    value-field: ${applications.versions.preprocessing.transformation.converters[0].output-field}
+    value-field: ${applications[0].versions[0].preprocessing.transformation.converters[0].output-field}
   - name: TotalAccumulatedActiveEnergy
     value-field: ${applications.versions.preprocessing.transformation.converters[1].output-field}
   - name: AccumulatedActiveEnergy
