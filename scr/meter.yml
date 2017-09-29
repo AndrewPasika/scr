@@ -10,6 +10,10 @@ client:
     data-collection-extension:
        name: dcx
        publish-data-path: "json"
+    metadata-extension:
+       name: epmx
+       update-metadata-path: "update"
+       max-attempts: 3
 
 simulator:
   meters:
