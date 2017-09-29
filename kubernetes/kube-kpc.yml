@@ -29,6 +29,8 @@ spec:
         app: kpc-service
         tier: backend
     spec:
+      imagePullSecrets:
+        - name: hub-deploy
       containers:
       - name: kpc-service
         image: hub.kaaiot.io/kaaiot/kpc/kpc-service:1.0.0-SNAPSHOT
