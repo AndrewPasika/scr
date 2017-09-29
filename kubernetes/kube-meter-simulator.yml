@@ -84,7 +84,4 @@ spec:
           containerPort: 32703
         - name: jmx-port
           containerPort: 32704
-      volumes:
-        - name: meter-simulator-conf-volume
-          hostPath:
-            path: /usr/lib/meter-simulator-service/conf
+
