@@ -33,7 +33,7 @@ spec:
         - name: hub-deploy
       containers:
       - name: epts-service
-        image: hub.kaaiot.io/kaaiot/epts/epts-service:1.0.0-SNAPSHOT
+        image: hub.kaaiot.io/evangelism/epts/epts-smart-energy:1.0.0-SNAPSHOT
         imagePullPolicy: Always
         terminationMessagePolicy: FallbackToLogsOnError
         resources:
