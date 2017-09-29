@@ -5,4 +5,4 @@ metadata:
   labels:
     name: scr-url-config
 data:
-  scr-url: http://scr-service.default.svc.cluster.local:30770 # Use corresponding namespace name
+  scr-url: http://scr:30770 # Use corresponding namespace name

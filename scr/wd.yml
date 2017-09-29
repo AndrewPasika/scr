@@ -20,6 +20,7 @@ dashboards:
   -
     id: 4c435d3e-90c2-420d-866c-ea410ad35d12
     title: "Smart energy meter"
+    sidebarTitle: "Smart energy meter"
     description: "Smart energy meter solution"
     displayTitle: true
     displayDescription: true
