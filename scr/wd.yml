@@ -94,7 +94,7 @@ dashboards:
           dataSource:
             timeSeries:
               name: AccumulatedActiveEnergy
-              displayName: J
+              displayName: Energy, kWh
             endpoints: '${dashboard.id}'
       - height: 500
         percentWidth: 40
