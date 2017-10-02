@@ -195,7 +195,7 @@ dashboards:
           ranges:
             min: 0
             max: 40
-            lowCritical: 600
+            lowCritical: 400
             highCritical: 700
           updateInterval: 3
           emptyQueriesMax: 3
