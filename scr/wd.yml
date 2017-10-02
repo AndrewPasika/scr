@@ -189,7 +189,7 @@ dashboards:
           skin: SingleNumber
           dataSource:
             timeSeries:
-              name: ActivePower
+              name: TotalAccumulatedActiveEnergy
               displayName: J
             endpoints: '${dashboard.id}'
           ranges:
