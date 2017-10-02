@@ -100,7 +100,7 @@ dashboards:
         percentWidth: 40
         config:
           displayTitle: true
-          title: Statistics
+          title: Cost Analysis
           type: statistics
           service: API_EPTS
           baseUrl: api/v1
