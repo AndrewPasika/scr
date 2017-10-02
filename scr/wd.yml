@@ -83,7 +83,7 @@ dashboards:
         default: 1w
     widgets:
       - percentWidth: 60
-        height: 465
+        height: 500
         config:
           displayTitle: true
           title: "Accumulated active energy"
@@ -96,7 +96,7 @@ dashboards:
               name: AccumulatedActiveEnergy
               displayName: J
             endpoints: '${dashboard.id}'
-      - height: 465
+      - height: 500
         percentWidth: 40
         config:
           displayTitle: true
