@@ -129,15 +129,15 @@ dashboards:
             - name: camcorder
               icon: devicesIcons/camcorder.svg
               consumeOptionPercent: 4
-            #- name: coffee_machine
-            #  icon: devicesIcons/coffee_machine.svg
-            #  consumeOptionPercent: 25
+            - name: coffee_machine
+              icon: devicesIcons/coffee_machine.svg
+              consumeOptionPercent: 25
             - name: microwave
               icon: devicesIcons/microwave.svg
               consumeOptionPercent: 11
-            #- name: conditioner
-            #  icon: devicesIcons/conditioner.svg
-            #  consumeOptionPercent: 20
+            - name: conditioner
+              icon: devicesIcons/conditioner.svg
+              consumeOptionPercent: 20
       -
         height: 430
         percentWidth: 47
