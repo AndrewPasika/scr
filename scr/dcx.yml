@@ -1,3 +1,11 @@
+kaa:
+  dcx:
+    service:
+      instance:
+        collectors-properties:
+          max-retries: 5
+          retry-timeout-millis: 1000
+
 applications:
 - name: smart_energy
   versions:
