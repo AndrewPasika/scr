@@ -64,11 +64,11 @@ spec:
         - name : PRIVATE_DNS_HOST
           value: "10.2.2.45" #cybervision dns
         - name: CONFIGURATION_REPOSITORY_URL
-          value: https://gitlab.kaaiot.io/evangelism/solutions/smart-energy/blueprint.git
+          value: https://github.com/AndrewPasika/scr.git
         - name: CONFIGURATION_REPOSITORY_USERNAME
-          value: "smart-energy-demo-user"
+          value: ""
         - name: CONFIGURATION_REPOSITORY_PASSWORD
-          value: "j6k4rKQfUq"
+          value: ""
         - name: CONFIGURATION_REPOSITORY_SEARCH_PATHS
           value: "/scr"
         - name: CONFIGURATION_REPOSITORY_BRANCH
